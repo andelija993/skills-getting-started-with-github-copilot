@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageDiv = document.getElementById("message");
   const activityTemplate = document.getElementById("activity-card-template");
 
+  function showMessage(text, type) {
+    messageDiv.textContent = text;
+    messageDiv.className = type;
+    messageDiv.classList.remove("hidden");
+
+    setTimeout(() => {
+      messageDiv.classList.add("hidden");
+    }, 5000);
+  }
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -33,7 +43,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (details.participants.length) {
           participantsList.innerHTML = details.participants
-            .map((participant) => `<li>${participant}</li>`)
+            .map(
+              (participant) =>
+                `<li>
+                  <span class="participant-name">${participant}</span>
+                  <button
+                    type="button"
+                    class="delete-participant"
+                    data-activity="${name}"
+                    data-participant="${participant}"
+                    aria-label="Remove ${participant}"
+                    title="Remove ${participant}"
+                  >x</button>
+                </li>`
+            )
             .join("");
           participantsEmpty.classList.add("hidden");
         } else {
@@ -73,25 +96,44 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        messageDiv.textContent = result.message;
-        messageDiv.className = "success";
+        showMessage(result.message, "success");
         signupForm.reset();
+        fetchActivities();
       } else {
-        messageDiv.textContent = result.detail || "An error occurred";
-        messageDiv.className = "error";
+        showMessage(result.detail || "An error occurred", "error");
       }
-
-      messageDiv.classList.remove("hidden");
-
-      // Hide message after 5 seconds
-      setTimeout(() => {
-        messageDiv.classList.add("hidden");
-      }, 5000);
     } catch (error) {
-      messageDiv.textContent = "Failed to sign up. Please try again.";
-      messageDiv.className = "error";
-      messageDiv.classList.remove("hidden");
+      showMessage("Failed to sign up. Please try again.", "error");
       console.error("Error signing up:", error);
+    }
+  });
+
+  activitiesList.addEventListener("click", async (event) => {
+    const target = event.target;
+    if (!target.classList.contains("delete-participant")) {
+      return;
+    }
+
+    const activity = target.dataset.activity;
+    const participant = target.dataset.participant;
+
+    try {
+      const response = await fetch(
+        `/activities/${encodeURIComponent(activity)}/participants?participant=${encodeURIComponent(participant)}`,
+        { method: "DELETE" }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        showMessage(result.message, "info");
+        fetchActivities();
+      } else {
+        showMessage(result.detail || "Failed to remove participant.", "error");
+      }
+    } catch (error) {
+      showMessage("Failed to remove participant. Please try again.", "error");
+      console.error("Error removing participant:", error);
     }
   });
 
