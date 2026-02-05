@@ -20,63 +20,62 @@ app.mount("/static", StaticFiles(directory=os.path.join(Path(__file__).parent,
           "static")), name="static")
 
 # In-memory activity database
-activities = [
-    {
-        "Soccer Team": {
-            "description": "Practice soccer skills and compete in matches",
-            "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
-            "max_participants": 22,
-            "participants": ["Ava Rivera", "Jordan Lee", "Priya Singh"]
-        },
-        "Basketball Team": {
-            "description": "Develop basketball fundamentals and play in games",
-            "schedule": "Mondays, 3:30 PM - 5:00 PM",
-            "max_participants": 15,
-            "participants": ["Noah Kim"]
-        },
-        "Drama Club": {
-            "description": "Acting workshops and stage productions",
-            "schedule": "Thursdays, 3:30 PM - 5:00 PM",
-            "max_participants": 18,
-            "participants": ["Lucas", "Chloe"]
-        },
-        "Art Studio": {
-            "description": "Explore drawing, painting, and mixed media",
-            "schedule": "Tuesdays, 3:30 PM - 5:00 PM",
-            "max_participants": 16,
-            "participants": ["Ethan", "Lily"]
-        },
-        "Math Olympiad": {
-            "description": "Problem solving and preparation for math competitions",
-            "schedule": "Fridays, 3:30 PM - 4:30 PM",
-            "max_participants": 14,
-            "participants": ["James", "Zoe"]
-        },
-        "Science Club": {
-            "description": "Hands-on experiments and science projects",
-            "schedule": "Wednesdays, 2:30 PM - 4:00 PM",
-            "max_participants": 20,
-            "participants": ["Henry", "Ella"]
-        },
+activities = {
+    "Soccer Team": {
+        "description": "Practice soccer skills and compete in matches",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 22,
+        "participants": ["Ava Rivera", "Jordan Lee", "Priya Singh"],
+    },
+    "Basketball Team": {
+        "description": "Develop basketball fundamentals and play in games",
+        "schedule": "Mondays, 3:30 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": ["Noah Kim"],
+    },
+    "Drama Club": {
+        "description": "Acting workshops and stage productions",
+        "schedule": "Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 18,
+        "participants": ["Lucas", "Chloe"],
+    },
+    "Art Studio": {
+        "description": "Explore drawing, painting, and mixed media",
+        "schedule": "Tuesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 16,
+        "participants": ["Ethan", "Lily"],
+    },
+    "Math Olympiad": {
+        "description": "Problem solving and preparation for math competitions",
+        "schedule": "Fridays, 3:30 PM - 4:30 PM",
+        "max_participants": 14,
+        "participants": ["James", "Zoe"],
+    },
+    "Science Club": {
+        "description": "Hands-on experiments and science projects",
+        "schedule": "Wednesdays, 2:30 PM - 4:00 PM",
+        "max_participants": 20,
+        "participants": ["Henry", "Ella"],
+    },
     "Chess Club": {
         "description": "Learn strategies and compete in chess tournaments",
         "schedule": "Fridays, 3:30 PM - 5:00 PM",
         "max_participants": 12,
-        "participants": ["Michael", "Daniel"]
+        "participants": ["Michael", "Daniel"],
     },
     "Programming Class": {
         "description": "Learn programming fundamentals and build software projects",
         "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
         "max_participants": 20,
-        "participants": ["Emma", "Sophia"]
+        "participants": ["Emma", "Sophia"],
     },
     "Gym Class": {
         "description": "Physical education and sports activities",
         "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
         "max_participants": 30,
-        "participants": ["John", "Olivia"]
-    }
-]
+        "participants": ["John", "Olivia"],
+    },
+}
 
 
 @app.get("/")
