@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
+  const activityTemplate = document.getElementById("activity-card-template");
 
   // Function to fetch activities from API
   async function fetchActivities() {
@@ -12,20 +13,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Clear loading message
       activitiesList.innerHTML = "";
+      activitySelect.innerHTML = '<option value="">-- Select an activity --</option>';
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
-
+        const activityCard = activityTemplate.content.firstElementChild.cloneNode(true);
         const spotsLeft = details.max_participants - details.participants.length;
 
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
-        `;
+        activityCard.querySelector(".activity-title").textContent = name;
+        activityCard.querySelector(".activity-description").textContent = details.description;
+        activityCard.querySelector(".activity-schedule").innerHTML = `<strong>Schedule:</strong> ${details.schedule}`;
+
+        const availability = document.createElement("p");
+        availability.innerHTML = `<strong>Availability:</strong> ${spotsLeft} spots left`;
+        activityCard.appendChild(availability);
+
+        const participantsList = activityCard.querySelector(".participants-list");
+        const participantsEmpty = activityCard.querySelector(".participants-empty");
+
+        if (details.participants.length) {
+          participantsList.innerHTML = details.participants
+            .map((participant) => `<li>${participant}</li>`)
+            .join("");
+          participantsEmpty.classList.add("hidden");
+        } else {
+          participantsList.innerHTML = "";
+          participantsEmpty.classList.remove("hidden");
+        }
 
         activitiesList.appendChild(activityCard);
 

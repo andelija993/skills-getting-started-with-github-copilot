@@ -169,6 +169,10 @@ footer {
   color: #2f3447;
 }
 
+.participants-list li::marker {
+  color: #4c6fff;
+}
+
 .participants-empty {
   margin: 0;
   font-size: 0.9rem;
